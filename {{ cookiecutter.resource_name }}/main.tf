@@ -26,6 +26,6 @@ resource "aws_instance" "ubuntu" {
   instance_type = "{{ cookiecutter.instance_type }}"
 
   tags = {
-    Name = "{{ cookiecutter.instance_name }}"
+    Name = "{{ cookiecutter.resource_name }}"
   }
 }
