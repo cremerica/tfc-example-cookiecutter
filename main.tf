@@ -26,6 +26,6 @@ resource "aws_instance" "ubuntu" {
   instance_type = var.instance_type
 
   tags = {
-    Name = "newNameishere"
+    Name = "anothernamechange"
   }
 }
