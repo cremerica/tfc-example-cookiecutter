@@ -26,6 +26,6 @@ resource "aws_instance" "ubuntu" {
   instance_type = var.instance_type
 
   tags = {
-    Name = "anothernamechange"
+    Name = "my-ec2-instance"
   }
 }
