@@ -37,7 +37,7 @@ resource "null_resource" "send_curl_notification" {
 
   provisioner "local-exec" {
     command = <<EOT
-curl -X POST "${var.cortex_callback}" -H "Content-Type: application/json"  "Authorization: Bearer ${var.cortex_token}" -d '{"status":"success", "message":"Finished","response":{"data":"${aws_instance.ubuntu.arn}"}}'
+curl -X POST "${var.cortex_callback}" -H "Content-Type: application/json"  -H "Authorization: Bearer ${var.cortex_token}" -d '{"status":"success", "message":"Finished","response":{"data":"${aws_instance.ubuntu.arn}"}}'
 EOT
   }
 }
