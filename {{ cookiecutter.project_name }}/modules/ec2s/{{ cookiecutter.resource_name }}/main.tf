@@ -36,7 +36,7 @@ resource "null_resource" "send_curl_notification" {
   depends_on = [aws_instance.ubuntu]
 
   provisioner "local-exec" {
-    command = "curl -X POST -H \"Content-Type: application/json\" -d '{\"status\": \"Success\", \"message\": \"aws_instance.ubuntu.arn\"}' var.cortex_callback
+    command = "curl -X POST -H \"Content-Type: application/json\"  \"Authorization: Bearer var.cortex_token\" -d '{\"status\": \"Success\", \"message\": \"aws_instance.ubuntu.arn\"}' var.cortex_callback "
   }
 }
 
