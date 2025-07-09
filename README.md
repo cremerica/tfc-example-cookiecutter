@@ -39,14 +39,24 @@ First, make sure you meet the prerequesites above.
 
 Next, let's set up secrets in Cortex. To do this, log into Cortex and go to Settings > Authentication and Access > Secrets. Create the following secrets (note - you can use different names, just make sure you also edit their reference in the workflow ):
 
-* tf_token: A [User API](https://developer.hashicorp.com/terraform/cloud-docs/users-teams-organizations/api-tokens#user-api-tokens) token from Terraform Cloud.
-* tf_organization: The organization name in Terraform Cloud
-* aws_access_key_id: Your AWS Access Key ID - this is set as environment variablels in the Terraform Workspace in order to deploy to EC2 instance to AWS.
-* aws_secret_access_key: Your AWS Secret Access Key - this is set as environment variablels in the Terraform Workspace in order to deploy to EC2 instance to AWS.
+* **tf_token:** A [User API](https://developer.hashicorp.com/terraform/cloud-docs/users-teams-organizations/api-tokens#user-api-tokens) token from Terraform Cloud.
+* **tf_organization:** The organization name in Terraform Cloud
+* **aws_access_key_id:** Your AWS Access Key ID - this is set as environment variablels in the Terraform Workspace in order to deploy to EC2 instance to AWS.
+* **aws_secret_access_key:** Your AWS Secret Access Key - this is set as environment variablels in the Terraform Workspace in order to deploy to EC2 instance to AWS.
 
 ### Register Scaffolder
 
-Fork this repository to an organization in Git that Cortex has access to. Then follow our [docs](https://docs.cortex.io/workflows/scaffolder)
+Fork this repository to an organization in Git that Cortex has access to. Then follow our [docs](https://docs.cortex.io/workflows/scaffolder) to register the scaffolder template.
+
+**Note:** This scaffolder template assumes you have a `modules/ec2s` folder structure in the repo where the workspace is created. If you have a different path, modify the path in the template.
+
+### Create the workflow
+
+To use the Yaml in this repository you have two options:
+1. Use (this)[https://docs.cortex.io/api/rest/workflows#post-api-v1-workflows] API endpoint to add it.
+2. Use (GitOps)[https://docs.cortex.io/workflows/create/workflows-as-code] to add it
+
+You can also use the UI and use the YAML file as a guide.
 
 
   
