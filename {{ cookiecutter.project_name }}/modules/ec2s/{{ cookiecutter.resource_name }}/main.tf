@@ -30,13 +30,5 @@ resource "aws_instance" "ubuntu" {
   }
 }
 
-resource "null_resource" "send_curl_notification" {
-  # This resource depends on other resources being created first.
-  # For example, if you want to notify about a newly created EC2 instance:
-  depends_on = [aws_instance.ubuntu]
 
-  provisioner "local-exec" {
-    command = "curl -X POST -H \"Content-Type: application/json\"  \"Authorization: Bearer ${var.cortex_token}\" -d '{\"status\": \"Success\", \"message\": \"aws_instance.ubuntu.arn\"}' ${var.cortex_callback}"
-  }
-}
 
