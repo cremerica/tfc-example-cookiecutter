@@ -18,7 +18,7 @@ It also contains a workflow yaml - this workflow uses the included cookiecutter 
 * GitHub organization (you can create your own for free!)
 
 
-##Terraform Files
+## Terraform Files
 
 As stated above this is based on Hashicorps [TFC Guide Example](https://github.com/hashicorp/tfc-guide-example) repo and we have modified some of the value fields with cookiecutter place holders. For example, in the original `main.tf` on line 5 we have:
 
