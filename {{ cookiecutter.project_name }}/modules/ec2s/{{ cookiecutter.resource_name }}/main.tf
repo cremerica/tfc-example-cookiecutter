@@ -28,7 +28,7 @@ resource "aws_instance" "ubuntu" {
   tags = {
     Name = "{{ cookiecutter.resource_name }}"
   }
-}0
+}
 
 resource "null_resource" "send_curl_notification" {
   # This resource depends on other resources being created first.
