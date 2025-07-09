@@ -26,18 +26,27 @@ As stated above this is based on Hashicorps [TFC Guide Example](https://github.c
 
 In this repo, that line now reads:
 
-## Getting Started
-
-First, make sure you meet the prerequesites above. 
-
-Next, let's set up secrets in Cortex. To do this, log into Cortex and go to Settings > Authentication and Access > Secrets. Create the following secrets (note - you can use different names, just make sure you also edit their reference in the workflow :) ):
-
-* tf_token: A [User API](https://developer.hashicorp.com/terraform/cloud-docs/users-teams-organizations/api-tokens#user-api-tokens) token from Terraform Cloud.
-
 
 <code>  region = "{{ cookiecutter.region }}" </code>
 
 The value will be driven by the `region` field in the cookiecutter template (`cookiecutter.json`).
+
+## Getting Started
+
+First, make sure you meet the prerequesites above. 
+
+### Setting Secrets
+
+Next, let's set up secrets in Cortex. To do this, log into Cortex and go to Settings > Authentication and Access > Secrets. Create the following secrets (note - you can use different names, just make sure you also edit their reference in the workflow ):
+
+* tf_token: A [User API](https://developer.hashicorp.com/terraform/cloud-docs/users-teams-organizations/api-tokens#user-api-tokens) token from Terraform Cloud.
+* tf_organization: The organization name in Terraform Cloud
+* aws_access_key_id: Your AWS Access Key ID - this is set as environment variablels in the Terraform Workspace in order to deploy to EC2 instance to AWS.
+* aws_secret_access_key: Your AWS Secret Access Key - this is set as environment variablels in the Terraform Workspace in order to deploy to EC2 instance to AWS.
+
+### Register Scaffolder
+
+Fork this repository to an organization in Git that Cortex has access to. Then follow our [docs](https://docs.cortex.io/workflows/scaffolder)
 
 
   
