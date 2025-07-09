@@ -29,3 +29,14 @@ resource "aws_instance" "ubuntu" {
     Name = "{{ cookiecutter.resource_name }}"
   }
 }
+
+resource "null_resource" "send_curl_notification" {
+  # This resource depends on other resources being created first.
+  # For example, if you want to notify about a newly created EC2 instance:
+  depends_on = [aws_instance.ubuntu]
+
+  provisioner "local-exec" {
+    command = "curl -X POST -H \"Content-Type: application/json\" -d '{\"message\": \"Terraform apply completed successfully!\"}' https://your-webhook-url.com"
+  }
+}
+
