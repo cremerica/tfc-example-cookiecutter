@@ -2,6 +2,8 @@
 
 Example that shows an example of using a Cortex workflow to create a new Terraform workspace in an existing repository.
 
+![workflow](/images/workflow.png)
+
 ### Cookiecutter Template
 
 This repo contains a CookieCutter template based on the tfc guide example from Hashicorp.
