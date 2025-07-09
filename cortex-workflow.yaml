@@ -1,0 +1,198 @@
+name: "[Terraform Cloud] - New Workspace in Existing Repo"
+tag: terraform-cloud-new-workspace
+description: null
+isDraft: false
+filter:
+  type: GLOBAL
+runResponseTemplate: null
+actions:
+- name: Resource Details
+  slug: resource-details
+  schema:
+    inputs:
+    - name: Resource Name
+      description: null
+      key: resource-name
+      required: true
+      defaultValue: null
+      placeholder: my-ec2-instance
+      validationRegex: null
+      type: INPUT_FIELD
+    - name: Resource Size
+      description: null
+      key: resource-size
+      required: false
+      options:
+      - t2.micro
+      - t2.medium
+      - t2.large
+      defaultValue: t2.micro
+      placeholder: null
+      allowAdditionalOptions: false
+      type: SELECT_FIELD
+    - name: Resource Region
+      description: null
+      key: resource-region
+      required: false
+      options:
+      - us-east-1
+      - us-east-2
+      - us-west-1
+      - us-west-2
+      defaultValue: us-west-2
+      placeholder: null
+      allowAdditionalOptions: false
+      type: SELECT_FIELD
+    inputOverrides: []
+    type: USER_INPUT
+  outgoingActions:
+  - slugify-resource-name
+  isRootAction: true
+- name: Slugify Resource Name
+  slug: slugify-resource-name
+  schema:
+    expression: .actions."resource-details".outputs."resource-name" | ascii_downcase
+      | gsub(" ";"-")
+    type: JQ
+  outgoingActions:
+  - getting-github-details
+  isRootAction: false
+- name: Getting GitHub Details
+  slug: getting-github-details
+  schema:
+    expression: |-
+      {
+      "pr_name" : "PR for " + .actions."slugify-resource-name".outputs.result ,
+      "branch_name" : "Branch for " + .actions."slugify-resource-name".outputs.result ,
+      "repo_name" : "cremerica/sample-iac-repo",
+      "path" : "modules/ec2s",
+      "commit_msg": "Commit automated by Cortex"
+      }
+    type: JQ
+  outgoingActions:
+  - scaffold-git-repo
+  isRootAction: false
+- name: Scaffold Git Repo
+  slug: scaffold-git-repo
+  schema:
+    scaffolderTemplateId: st2babdd4cc74929f2
+    createNewRepository: false
+    createService: false
+    inputOverrides:
+    - inputKey: resource_name
+      outputVariable: actions.slugify-resource-name.outputs.result
+      editable: false
+      type: VALUE
+    - inputKey: region
+      outputVariable: actions.resource-details.outputs.resource-region
+      editable: false
+      type: VALUE
+    - inputKey: instance_type
+      outputVariable: actions.resource-details.outputs.resource-size
+      editable: false
+      type: VALUE
+    - inputKey: entityMetadataName
+      outputVariable: actions.resource-details.outputs.resource-name
+      editable: false
+      type: VALUE
+    - inputKey: entityMetadataTag
+      outputVariable: actions.slugify-resource-name.outputs.result
+      editable: false
+      type: VALUE
+    - inputKey: publisherRepoName
+      outputVariable: actions.slugify-resource-name.outputs.result
+      editable: false
+      type: VALUE
+    - inputKey: publisherPullRequestTitle
+      outputVariable: actions.getting-github-details.outputs.result.pr_name
+      editable: false
+      type: VALUE
+    - inputKey: publisherBranch
+      outputVariable: actions.getting-github-details.outputs.result.branch_name
+      editable: false
+      type: VALUE
+    type: SCAFFOLDER
+  outgoingActions:
+  - create-workspace
+  isRootAction: false
+- name: Create Workspace
+  slug: create-workspace
+  schema:
+    headers:
+      Content-Type: application/vnd.api+json
+      Authorization: "Bearer {{ context.secrets.tf_token }}"
+    httpMethod: POST
+    payload: "{\n   \"data\":{\n      \"type\":\"workspaces\",\n      \"attributes\"\
+      :{\n         \"auto-apply\": true,\n         \"environment\":\"default\",\n\
+      \         \"name\":\"{{actions.slugify-resource-name.outputs.result}}\",\n \
+      \        \"terraform-version\":\"1.8.5\",\n         \"working-directory\": \"\
+      modules/ec2s/{{actions.slugify-resource-name.outputs.result}}\",\n         \"\
+      resource-count\":0,\n         \"vcs-repo\":{\n            \"branch\":\"\",\n\
+      \            \"identifier\":\"cremerica/sample-iac-repo\",\n            \"display-identifier\"\
+      :\"cremerica/sample-iac-repo\",\n            \"github-app-installation-id\"\
+      :\"ghain-d3rQou9dNGew4LVx\",\n            \"repository-http-url\":\"https://github.com/cremerica/sample-iac-repo.git}\"\
+      ,\n            \"service-provider\":\"github_app\"\n         },\n         \"\
+      vcs-repo-identifier\":\"cremerica/sample-iac-repo\",\n         \"project\":{\n\
+      \            \"data\":{\n               \"id\":\"prj-nyRLtYxKHcWLggNU\",\n \
+      \              \"type\":\"projects\"\n            }\n         }\n      }\n \
+      \  } \n}"
+    url: "https://app.terraform.io/api/v2/organizations/{{context.secrets.tf_organization}}/workspaces/"
+    type: HTTP_REQUEST
+  outgoingActions:
+  - add-aws-access-key-environment-variable
+  isRootAction: false
+- name: Add AWS Access Key Environment Variable
+  slug: add-aws-access-key-environment-variable
+  schema:
+    headers:
+      Content-Type: application/vnd.api+json
+      Authorization: "Bearer {{ context.secrets.tf_token }}"
+    httpMethod: POST
+    payload: |-
+      {
+        "data": {
+          "type":"vars",
+          "attributes": {
+            "key":"AWS_ACCESS_KEY_ID",
+            "value":"{{context.secrets.aws_access_key_id}}",
+            "description":"some description",
+            "category":"terraform",
+            "hcl":false,
+            "sensitive":true
+          }
+        }
+      }
+    url: "https://app.terraform.io/api/v2/workspaces/{{ actions.create-workspace.outputs.body.data.id\
+      \ }}/vars"
+    type: HTTP_REQUEST
+  outgoingActions:
+  - add-aws-secret-key-environment-variable
+  isRootAction: false
+- name: Add AWS Secret Key Environment Variable
+  slug: add-aws-secret-key-environment-variable
+  schema:
+    headers:
+      Content-Type: application/vnd.api+json
+      Authorization: "Bearer {{ context.secrets.tf_token }}"
+    httpMethod: POST
+    payload: |-
+      {
+        "data": {
+          "type":"vars",
+          "attributes": {
+            "key":"AWS_SECRET_ACCESS_KEY",
+            "value":"{{context.secrets.aws_secret_access_key}}",
+            "description":"some description",
+            "category":"terraform",
+            "hcl":false,
+            "sensitive":true
+          }
+        }
+      }
+    url: "https://app.terraform.io/api/v2/workspaces/{{ actions.create-workspace.outputs.body.data.id\
+      \ }}/vars"
+    type: HTTP_REQUEST
+  outgoingActions: []
+  isRootAction: false
+runRestrictionPolicies: []
+iconTag: null
