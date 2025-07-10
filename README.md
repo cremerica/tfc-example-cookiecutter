@@ -72,3 +72,5 @@ To perform Terraform Destroy we can rely on the Terraform Cloud API. The Workspa
 
 Here is a high level diagram of a Destroy Workflow:
 
+![Workflow Destroy](/images/workflow-destroy.png)
+
