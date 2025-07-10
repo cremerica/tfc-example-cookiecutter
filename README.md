@@ -58,5 +58,9 @@ To use the Yaml in this repository you have two options:
 
 You can also use the UI and use the YAML file as a guide.
 
+## Day 2 - Modify the instance
+
+To modify the instance we can reuse the same scaffolder template and a very similar workflow. In the previous workflow, we also added it to the Catalog and noted the GitHub repository and path  where the terraform plans are. We can use this to retrieve the contents of the file, and get the latest values to show the user.
+
 
   
