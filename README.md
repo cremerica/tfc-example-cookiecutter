@@ -66,4 +66,9 @@ Here is a high level overview of the workflow
 
 ![Workflow Day 2](/images/workflow-day2.png)
 
-  
+## Day 3 - Destroy
+
+To perform Terraform Destroy we can rely on the Terraform Cloud API. The Workspace ID is also attached to the catalog entity which can be used by a workflow.
+
+Here is a high level diagram of a Destroy Workflow:
+
