@@ -29,12 +29,7 @@ resource "aws_instance" "ubuntu" {
     Name = "{{ cookiecutter.resource_name }}"
   }
 
-  provisioner "local-exec" {
-    when    = "destroy"
-    command = <<EOT
-curl -X POST "${var.cortex_callback}" -H "Content-Type: application/json"  -H "Authorization: Bearer ${var.cortex_token}" -d '{"status":"success", "message":"Finished"}'
-EOT
-  }
+  
 }
 
 resource "null_resource" "send_curl_notification" {
