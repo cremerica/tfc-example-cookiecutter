@@ -62,5 +62,8 @@ You can also use the UI and use the YAML file as a guide.
 
 To modify the instance we can reuse the same scaffolder template and a very similar workflow. In the previous workflow, we also added it to the Catalog and noted the GitHub repository and path  where the terraform plans are. We can use this to retrieve the contents of the file, and get the latest values to show the user.
 
+Here is a high level overview of the workflow
+
+![Workflow Day 2](/images/workflow-day2.png)
 
   
