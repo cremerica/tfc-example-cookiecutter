@@ -62,7 +62,7 @@ curl -X POST "https://api.getcortexapp.com/api/v1/workflows" \
   -H "Authorization: Bearer $CORTEX_API_TOKEN" \
   -H "Content-Type: application/yaml" \
   --data-binary @my-workflow.yml 
-   </code>
+
 ~~~   
    
 3. Use (GitOps)[https://docs.cortex.io/workflows/create/workflows-as-code] to add it
