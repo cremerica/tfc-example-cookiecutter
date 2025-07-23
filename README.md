@@ -54,7 +54,18 @@ Fork this repository to an organization in Git that Cortex has access to. Then f
 
 To use the Yaml in this repository you have two options:
 1. Use (this)[https://docs.cortex.io/api/rest/workflows#post-api-v1-workflows] API endpoint to add it.
-2. Use (GitOps)[https://docs.cortex.io/workflows/create/workflows-as-code] to add it
+
+   Here is an example curl command you can run. The command below assumes you've set an environment variable CORTEX_API_TOKEN to contain your Cortex Api Token and that the file is called 'my-workflow.yml'
+
+~~~sh
+curl -X POST "https://api.getcortexapp.com/api/v1/workflows" \
+  -H "Authorization: Bearer $CORTEX_API_TOKEN" \
+  -H "Content-Type: application/yaml" \
+  --data-binary @my-workflow.yml 
+   </code>
+~~~   
+   
+3. Use (GitOps)[https://docs.cortex.io/workflows/create/workflows-as-code] to add it
 
 You can also use the UI and use the YAML file as a guide.
 
